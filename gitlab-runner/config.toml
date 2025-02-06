@@ -1,0 +1,19 @@
+concurrent = 1
+check_interval = 0
+
+[session_server]
+  session_timeout = 1800
+
+[[runners]]
+  name = "my-runner"
+  url = "http://gitlab"
+  token = "glrt-t3_Uwjj4xRMnwwjzGAY_Gd2"
+  executor = "docker"
+  [runners.docker]
+    tls_verify = false
+    image = "alpine:latest"
+    privileged = false
+    disable_cache = false
+    volumes = ["/cache"]
+    shm_size = 0
+    extra_hosts = ["gitlab:192.168.1.104"]

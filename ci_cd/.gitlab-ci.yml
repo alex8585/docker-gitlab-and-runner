@@ -1,0 +1,28 @@
+image: docker:latest
+
+services:
+  - docker:dind
+
+stages:
+  - deploy
+
+
+deploy:
+  stage: deploy
+  image: ubuntu:latest
+  before_script:
+    - printenv
+    - 'command -v ssh-agent >/dev/null || ( apt-get update -y && apt-get install openssh-client -y )'
+    - mkdir ~/.ssh/ 
+    - echo "$SSH_PRIVATE_KEY_BASE64" | base64 -d >  ~/.ssh/id_rsa 
+    - chmod 0600  ~/.ssh/id_rsa  
+    - eval $(ssh-agent -s)
+    - ssh-keyscan -H 192.168.1.105 >> ~/.ssh/known_hosts
+    - ssh-add ~/.ssh/id_rsa
+
+  script:
+    - echo "Копирование файлов на сервер..."
+    - scp -o StrictHostKeyChecking=no -r docker-compose.yml example.env folders.sh html mysqli_php nginx alex@192.168.1.105:/var/app2
+    - ssh -o StrictHostKeyChecking=no alex@192.168.1.105 'cd /var/app2 && chmod +x folders.sh && ./folders.sh'
+    - echo "Запуск Docker Compose на сервере..."
+    - ssh -o StrictHostKeyChecking=no alex@192.168.1.105 'cd /var/app2 && mv ./example.env ./.env &&  docker-compose down && docker-compose up -d'
