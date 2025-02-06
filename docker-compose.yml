@@ -7,7 +7,7 @@ services:
     environment:
       GITLAB_OMNIBUS_CONFIG: |
         external_url 'http://gitlab'  
-        gitlab_rails['initial_root_password'] = 'Elvne3132'  
+        gitlab_rails['initial_root_password'] = 'password'  
     ports:
       - "80:80"
       - "443:443"
@@ -31,7 +31,7 @@ services:
       # - gitlab-runner-config:/etc/gitlab-runner
     environment:
       - CI_SERVER_URL=http://gitlab 
-      - REGISTRATION_TOKEN=glrt-t3_Uwjj4xRMnwwjzGAY_Gd2
+      - REGISTRATION_TOKEN=<you-token-here>
       - RUNNER_NAME=my-runner
       - RUNNER_EXECUTOR=docker
       - DOCKER_IMAGE=alpine:latest
