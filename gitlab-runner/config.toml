@@ -7,7 +7,7 @@ check_interval = 0
 [[runners]]
   name = "my-runner"
   url = "http://gitlab"
-  token = "glrt-t3_Uwjj4xRMnwwjzGAY_Gd2"
+  token = "<you-token-here>"
   executor = "docker"
   [runners.docker]
     tls_verify = false
